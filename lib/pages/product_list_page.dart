@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mainapp/models/shoppingCart.dart';
-import 'package:mainapp/pages/ProductDetailPage.dart';
-import '../models/product.dart';
+import 'package:mainapp/models/product.dart';
 
 class ProductListPage extends StatelessWidget {
   final String category;
   final Map<String, Product> products;
   final ShoppingCart cart;
 
-  ProductListPage({required this.category, required this.products , required this.cart});
+  ProductListPage({required this.category, required this.products, required this.cart});
 
   @override
   Widget build(BuildContext context) {
@@ -30,8 +30,7 @@ class ProductListPage extends StatelessWidget {
           Product product = filteredProducts[index];
           return Card(
             margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
             elevation: 5,
             child: ListTile(
               title: Text(
@@ -58,12 +57,7 @@ class ProductListPage extends StatelessWidget {
                 color: Colors.blue,
               ),
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ProductDetailPage(product: product,cart: cart,),
-                  ),
-                );
+                context.go('/product_detail', extra: {'product': product, 'cart': cart});
               },
             ),
           );

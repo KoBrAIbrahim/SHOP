@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mainapp/models/shoppingCart.dart';
 import '../models/product.dart';
 
 class ProductDetailPage extends StatefulWidget {
   final Product product;
-  final ShoppingCart cart; 
+  final ShoppingCart cart;
 
-  ProductDetailPage({required this.product , required this.cart});
+  ProductDetailPage({required this.product, required this.cart});
 
   @override
   _ProductDetailPageState createState() => _ProductDetailPageState();
@@ -31,7 +32,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
           IconButton(
             icon: Icon(Icons.home),
             onPressed: () {
-              Navigator.popUntil(context, ModalRoute.withName('/'));
+              context.go('/');
             },
           ),
         ],
@@ -62,7 +63,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             ),
             SizedBox(height: 20),
             Container(
-              width: MediaQuery.of(context).size.width - 100,
+              width: MediaQuery.of(context).size.width - 50,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -98,12 +99,13 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               width: MediaQuery.of(context).size.width - 100,
               child: ElevatedButton(
                 onPressed: () {
-                  widget.cart.addProduct(widget.product,_quantity);
+                  widget.cart.addProduct(widget.product, _quantity);
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                         content: Text("${widget.product.name} added to cart")),
                   );
-                  Navigator.pop(context, widget.cart);
+
+                  context.go('/');
                 },
                 child: Text("Add to Cart"),
                 style: ElevatedButton.styleFrom(

@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mainapp/models/product.dart';
 import 'package:mainapp/models/shoppingCart.dart';
-import 'package:mainapp/pages/paymentPage.dart';
-import 'package:mainapp/pages/product_list_page.dart'; 
 
 class HomePage extends StatelessWidget {
   final Map<String, Product> products;
   final ShoppingCart cart;
 
-  HomePage({required this.products, required this.cart}); 
+  HomePage({required this.products, required this.cart});
 
   @override
   Widget build(BuildContext context) {
@@ -17,15 +16,13 @@ class HomePage extends StatelessWidget {
         title: LayoutBuilder(
           builder: (context, constraints) {
             double fontSize = 22;
-
             if (constraints.maxWidth < 400) {
-              fontSize = 18; 
+              fontSize = 18;
             } else if (constraints.maxWidth >= 400 && constraints.maxWidth < 800) {
-              fontSize = 22; 
+              fontSize = 22;
             } else {
               fontSize = 26;
             }
-
             return Text(
               "Welcome to Shop",
               style: TextStyle(
@@ -42,12 +39,7 @@ class HomePage extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.shopping_cart),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => PaymentPage(cart: cart),  
-                ),
-              );
+              context.go('/payment', extra: cart);
             },
           ),
         ],
@@ -69,24 +61,9 @@ class HomePage extends StatelessWidget {
           Expanded(
             child: ListView(
               children: [
-                _buildCategoryTile(
-                  context,
-                  "Sport",
-                  "Explore the best sport products",
-                  Icons.sports_soccer,
-                ),
-                _buildCategoryTile(
-                  context,
-                  "Clothes",
-                  "Trendy and comfortable clothes",
-                  Icons.checkroom,
-                ),
-                _buildCategoryTile(
-                  context,
-                  "Shoes",
-                  "Stylish shoes for every occasion",
-                  Icons.directions_run,
-                ),
+                _buildCategoryTile(context, "Sport", "Explore the best sport products", Icons.sports_soccer),
+                _buildCategoryTile(context, "Clothes", "Trendy and comfortable clothes", Icons.checkroom),
+                _buildCategoryTile(context, "Shoes", "Stylish shoes for every occasion", Icons.directions_run),
               ],
             ),
           ),
@@ -95,25 +72,18 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildCategoryTile(
-      BuildContext context, String title, String subtitle, IconData icon) {
+  Widget _buildCategoryTile(BuildContext context, String title, String subtitle, IconData icon) {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       elevation: 8,
       child: ListTile(
         leading: Icon(icon, color: Colors.blue, size: 30),
-        title: Text(title,
-            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+        title: Text(title, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
         subtitle: Text(subtitle, style: TextStyle(color: Colors.grey[600])),
         trailing: const Icon(Icons.arrow_forward_ios, color: Colors.blue),
         onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ProductListPage(category: title, products: products, cart: cart),
-            ),
-          );
+          context.go('/product-list/$title');
         },
       ),
     );

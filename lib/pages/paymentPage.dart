@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mainapp/models/shoppingCart.dart';
-import 'package:mainapp/models/payment.dart'; 
+import 'package:mainapp/models/payment.dart';
+import 'package:go_router/go_router.dart';
 
 class PaymentPage extends StatefulWidget {
   final ShoppingCart cart;
@@ -24,12 +25,10 @@ class _PaymentPageState extends State<PaymentPage> {
 
   void handlePayment() {
     if (isVisaSelected) {
-      VisaPayment visaPayment =
-          VisaPayment("1234-5678-9101-1121");
+      VisaPayment visaPayment = VisaPayment("1234-5678-9101-1121");
       visaPayment.pay(totalAmount);
     } else if (isPaypalSelected) {
-      PayPalPayment paypalPayment =
-          PayPalPayment("ibrahim@gmail.com");
+      PayPalPayment paypalPayment = PayPalPayment("ibrahim@gmail.com");
       paypalPayment.pay(totalAmount);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -39,14 +38,14 @@ class _PaymentPageState extends State<PaymentPage> {
 
     widget.cart.clearCart();
 
-    Navigator.pop(context); 
+    context.go('/');
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           "Payment Page",
           style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
@@ -55,7 +54,7 @@ class _PaymentPageState extends State<PaymentPage> {
           IconButton(
             icon: Icon(Icons.home, size: 30),
             onPressed: () {
-              Navigator.pop(context);
+              context.go('/');
             },
           ),
         ],
@@ -155,7 +154,7 @@ class _PaymentPageState extends State<PaymentPage> {
                           setState(() {
                             isVisaSelected = value ?? false;
                             if (isVisaSelected) {
-                              isPaypalSelected = false; 
+                              isPaypalSelected = false;
                             }
                           });
                         },

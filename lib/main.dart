@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mainapp/models/shoppingCart.dart';
+import 'package:mainapp/pages/ProductDetailPage.dart';
 import 'package:mainapp/pages/paymentPage.dart';
 import 'models/product.dart';
 import 'pages/home_page.dart';
@@ -35,7 +36,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Map<String, Product> products = _initializeProducts();
-    final ShoppingCart cart = ShoppingCart() ;
+    final ShoppingCart cart = ShoppingCart();
     final GoRouter router = GoRouter(
       routes: [
         GoRoute(
@@ -53,7 +54,21 @@ class MyApp extends StatelessWidget {
             String category = state.params['category'] ?? '';
             return ProductListPage(
               category: category,
-              products: products, cart: cart,
+              products: products,
+              cart: cart,
+            );
+          },
+        ),
+        GoRoute(
+          path: '/product_detail',
+          builder: (context, state) {
+            final extra = state.extra as Map<String, dynamic>?;
+            final Product product = extra?['product'];
+            final ShoppingCart cart = extra?['cart'];
+         
+            return ProductDetailPage(
+              product: product,
+              cart: cart,
             );
           },
         ),
